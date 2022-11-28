@@ -1,8 +1,11 @@
 package com.example.ticketservice.model;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import java.util.Objects;
 
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RaisedTicket {
 
     private String customerId;
