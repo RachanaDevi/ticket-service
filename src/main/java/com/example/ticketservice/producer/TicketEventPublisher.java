@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.example.ticketservice.constants.KafkaConfigConstants.MESSAGE_TOPIC;
+import static com.example.ticketservice.constants.KafkaConfigConstants.TICKET_SERVICE_TOPIC;
 
 @Component
 public class TicketEventPublisher {
@@ -19,6 +19,6 @@ public class TicketEventPublisher {
     }
 
     public CompletableFuture<SendResult<String, TicketEvent>> publish(TicketEvent ticketEvent) {
-        return kafkaTemplate.send(MESSAGE_TOPIC, ticketEvent);
+        return kafkaTemplate.send(TICKET_SERVICE_TOPIC, ticketEvent);
     }
 }
