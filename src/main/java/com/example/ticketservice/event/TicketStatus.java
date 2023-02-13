@@ -1,4 +1,4 @@
-package com.example.ticketservice.model;
+package com.example.ticketservice.event;
 
 public enum TicketStatus {
     CREATED

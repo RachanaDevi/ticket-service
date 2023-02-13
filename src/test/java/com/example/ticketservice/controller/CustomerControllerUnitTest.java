@@ -1,7 +1,7 @@
 package com.example.ticketservice.controller;
 
-import com.example.ticketservice.model.RaisedTicket;
-import com.example.ticketservice.producer.TicketEventPublisher;
+import com.example.ticketservice.event.Ticket;
+import com.example.ticketservice.producer.TicketPublisher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,11 +26,11 @@ class CustomerControllerUnitTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private TicketEventPublisher producer;
+    private TicketPublisher producer;
 
     @Test
     void shouldReturnResponseAsOK() throws Exception {
-        RaisedTicket raisedTicket = new RaisedTicket("anyCustomerId", "anyConcern", "anyDate");
+        Ticket raisedTicket = new Ticket("anyCustomerId", "anyConcern", "anyDate");
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")
@@ -43,7 +43,7 @@ class CustomerControllerUnitTest {
 
     @Test
     void shouldReturnResponseBody() throws Exception {
-        RaisedTicket raisedTicket = new RaisedTicket("anyCustomerId", "anyConcern", "anyDate");
+        Ticket raisedTicket = new Ticket("anyCustomerId", "anyConcern", "anyDate");
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")
