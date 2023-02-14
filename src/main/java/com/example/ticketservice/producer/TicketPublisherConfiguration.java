@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class TicketProducerConfiguration {
+public class TicketPublisherConfiguration {
 
     @Bean
     public ProducerFactory<String, TicketCreated> producerFactory() {
