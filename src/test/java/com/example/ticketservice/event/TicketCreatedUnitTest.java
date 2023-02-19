@@ -1,5 +1,6 @@
 package com.example.ticketservice.event;
 
+import com.example.ticketservice.model.Ticket;
 import org.junit.jupiter.api.Test;
 
 import static com.example.ticketservice.fixture.TicketCreatedFixture.anyTicket;

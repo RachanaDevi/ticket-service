@@ -3,3 +3,6 @@ curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/js
 
 Kafka console consumer for message-topic
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-service-topic --from-beginning
+
+TODO:
+1. Use spring security to store session for customer
