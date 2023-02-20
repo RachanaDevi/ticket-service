@@ -1,7 +1,7 @@
-CREATE TABLE tickets
+CREATE TABLE customers
 (
-    id          serial PRIMARY KEY,
-    customer_id serial,
-    concern     VARCHAR(255),
-    timestamp   timestamp
+    id             serial PRIMARY KEY,
+    name           VARCHAR(255),
+    place          VARCHAR(255),
+    phoneNumber    VARCHAR(255)
 );

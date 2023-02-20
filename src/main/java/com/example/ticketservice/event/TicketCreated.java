@@ -1,6 +1,6 @@
 package com.example.ticketservice.event;
 
-import com.example.ticketservice.entity.Ticket;
+import com.example.ticketservice.model.Ticket;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 

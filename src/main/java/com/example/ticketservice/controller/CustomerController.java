@@ -2,7 +2,7 @@ package com.example.ticketservice.controller;
 
 
 import com.example.ticketservice.event.TicketCreated;
-import com.example.ticketservice.entity.Ticket;
+import com.example.ticketservice.model.Ticket;
 import com.example.ticketservice.producer.TicketPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
