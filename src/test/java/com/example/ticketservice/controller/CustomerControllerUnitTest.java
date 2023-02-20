@@ -1,6 +1,6 @@
 package com.example.ticketservice.controller;
 
-import com.example.ticketservice.model.Ticket;
+import com.example.ticketservice.entity.Ticket;
 import com.example.ticketservice.producer.TicketPublisher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.sql.Timestamp;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,7 +32,7 @@ class CustomerControllerUnitTest {
 
     @Test
     void shouldReturnResponseAsOK() throws Exception {
-        Ticket raisedTicket = new Ticket("anyCustomerId", "anyConcern", "anyDate");
+        Ticket raisedTicket = new Ticket(1L, "anyConcern", Timestamp.valueOf("2023-02-18 01:24:00"));
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")
@@ -43,7 +45,7 @@ class CustomerControllerUnitTest {
 
     @Test
     void shouldReturnResponseBody() throws Exception {
-        Ticket raisedTicket = new Ticket("anyCustomerId", "anyConcern", "anyDate");
+        Ticket raisedTicket =  new Ticket(1L, "anyConcern", Timestamp.valueOf("2023-02-18 01:24:00"));
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")
