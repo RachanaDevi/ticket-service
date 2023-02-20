@@ -1,6 +1,6 @@
 package com.example.ticketservice.event;
 
-import com.example.ticketservice.model.Ticket;
+import com.example.ticketservice.event.Ticket;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

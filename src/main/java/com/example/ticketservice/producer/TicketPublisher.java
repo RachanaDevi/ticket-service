@@ -1,6 +1,7 @@
 package com.example.ticketservice.producer;
 
 import com.example.ticketservice.event.TicketCreated;
+import com.example.ticketservice.event.Ticket;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
@@ -12,13 +13,13 @@ import static com.example.ticketservice.constants.KafkaConfigConstants.TICKET_SE
 @Component
 public class TicketPublisher {
 
-    private final KafkaTemplate<String, TicketCreated> kafkaTemplate;
+    private final KafkaTemplate<String, Ticket> kafkaTemplate;
 
-    public TicketPublisher(KafkaTemplate<String, TicketCreated> kafkaTemplate) {
+    public TicketPublisher(KafkaTemplate<String, Ticket> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public CompletableFuture<SendResult<String, TicketCreated>> publish(TicketCreated ticketEvent) {
-        return kafkaTemplate.send(TICKET_SERVICE_TOPIC, ticketEvent);
+    public CompletableFuture<SendResult<String, Ticket>> publish(Ticket ticket) {
+        return kafkaTemplate.send(TICKET_SERVICE_TOPIC, ticket);
     }
 }
