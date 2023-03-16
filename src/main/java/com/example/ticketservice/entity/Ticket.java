@@ -14,8 +14,6 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    private Long feedbackId;
-
     private Long customerId;
 
     private Timestamp timestamp;
@@ -26,9 +24,10 @@ public class Ticket {
 
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
-//
-//    @OneToOne(mappedBy = "ticket")
-//    private Feedback feedback;
+
+    public Long id() {
+        return id;
+    }
 
     public Ticket() {
     }
@@ -49,7 +48,4 @@ public class Ticket {
         this.status = status;
     }
 
-    public Long id() {
-        return id;
-    }
 }

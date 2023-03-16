@@ -35,7 +35,4 @@ public class Feedback {
         return ticketId;
     }
 
-    //    @OneToOne
-//    @JoinColumn(name = "ticket_id", referencedColumnName = "id")
-//    private Ticket ticket;
 }
