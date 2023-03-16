@@ -25,7 +25,6 @@ public class TicketService {
 
     @Transactional
     public void saveAndPublish(Ticket ticket) {
-
         com.example.ticketservice.entity.Ticket ticketEntity = new com.example.ticketservice.entity.Ticket(ticket.ticketId(), ticket.customerId(),
                 Timestamp.valueOf(ticket.timestamp()), ticket.concern(), TicketStatus.CREATED);
         ticketRepository.save(ticketEntity);
