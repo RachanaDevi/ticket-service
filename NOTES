@@ -3,6 +3,8 @@ curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/js
 
 Kafka console consumer for message-topic
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-assigned-topic --from-beginning
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --reset-offsets --to-offset 0 --topic ticket-assigned-topic --group message-consumer-group --execute
+
 
 curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","timestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
 
