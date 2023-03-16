@@ -1,4 +1,4 @@
-package com.example.ticketservice.event;
+package com.example.ticketservice.entity;
 
 public enum TicketStatus {
     CREATED, ASSIGNED, COMPLETED

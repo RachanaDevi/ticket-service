@@ -1,7 +1,5 @@
 package com.example.ticketservice.entity;
 
-
-import com.example.ticketservice.event.TicketStatus;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;

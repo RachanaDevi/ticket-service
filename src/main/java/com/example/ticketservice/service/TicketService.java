@@ -4,7 +4,7 @@ import com.example.ticketservice.constants.KafkaConfigConstants;
 import com.example.ticketservice.entity.Feedback;
 import com.example.ticketservice.event.Ticket;
 import com.example.ticketservice.event.TicketAssigned;
-import com.example.ticketservice.event.TicketStatus;
+import com.example.ticketservice.entity.TicketStatus;
 import com.example.ticketservice.producer.TicketPublisher;
 import com.example.ticketservice.repository.FeedbackRepository;
 import com.example.ticketservice.repository.TicketAssignedRepository;

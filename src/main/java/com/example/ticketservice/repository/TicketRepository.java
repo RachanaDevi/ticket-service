@@ -1,14 +1,12 @@
 package com.example.ticketservice.repository;
 
 import com.example.ticketservice.entity.Ticket;
-import com.example.ticketservice.event.TicketStatus;
+import com.example.ticketservice.entity.TicketStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Timestamp;
 
 
 @Repository

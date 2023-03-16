@@ -1,7 +1,7 @@
 package com.example.ticketservice.request;
 
 import com.example.ticketservice.entity.Ticket;
-import com.example.ticketservice.event.TicketStatus;
+import com.example.ticketservice.entity.TicketStatus;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.sql.Timestamp;
