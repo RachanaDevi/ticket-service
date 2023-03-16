@@ -5,13 +5,14 @@ import com.example.ticketservice.event.TicketStatus;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tickets")
 public class Ticket {
 
     @Id
-    private Long id;
+    private UUID id;
 
     private Long customerId;
 
@@ -32,7 +33,7 @@ public class Ticket {
         this.status = status;
     }
 
-    public Ticket(Long id, Long customerId, Timestamp timestamp, String concern, TicketStatus status) {
+    public Ticket(UUID id, Long customerId, Timestamp timestamp, String concern, TicketStatus status) {
         this.id = id;
         this.customerId = customerId;
         this.timestamp = timestamp;

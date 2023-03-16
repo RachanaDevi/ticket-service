@@ -9,14 +9,14 @@ import java.util.UUID;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Ticket {
 
-    private final Long ticketId;
+    private final UUID ticketId;
     private final Long customerId;
     private final String concern;
     private final String timestamp;
 
     @JsonCreator
     public Ticket(Long customerId, String concern, String timestamp) {
-        this.ticketId = UUID.randomUUID().timestamp();
+        this.ticketId = UUID.randomUUID();
         this.customerId = customerId;
         this.concern = concern;
         this.timestamp = timestamp;
@@ -47,7 +47,7 @@ public class Ticket {
         return timestamp;
     }
 
-    public Long ticketId() {
+    public UUID ticketId() {
         return ticketId;
     }
 }

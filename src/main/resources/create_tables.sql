@@ -1,6 +1,6 @@
 CREATE TABLE tickets
 (
-    id          serial PRIMARY KEY,
+    id          UUID PRIMARY KEY,
     customer_id serial,
     concern     VARCHAR(255),
     status      VARCHAR(255),
