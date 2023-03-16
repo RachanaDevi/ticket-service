@@ -1,6 +1,5 @@
 package com.example.ticketservice.controller;
 
-import com.example.ticketservice.producer.TicketPublisher;
 import com.example.ticketservice.request.TicketCreated;
 import com.example.ticketservice.service.TicketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,13 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(TicketCreationController.class)
-class TicketCreationControllerUnitTest {
+@WebMvcTest(TicketController.class)
+class TicketControllerUnitTest {
 
 
     @Autowired

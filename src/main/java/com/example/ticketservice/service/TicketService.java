@@ -1,12 +1,15 @@
 package com.example.ticketservice.service;
 
 import com.example.ticketservice.constants.KafkaConfigConstants;
+import com.example.ticketservice.entity.Feedback;
 import com.example.ticketservice.event.Ticket;
 import com.example.ticketservice.event.TicketAssigned;
 import com.example.ticketservice.event.TicketStatus;
 import com.example.ticketservice.producer.TicketPublisher;
+import com.example.ticketservice.repository.FeedbackRepository;
 import com.example.ticketservice.repository.TicketAssignedRepository;
 import com.example.ticketservice.repository.TicketRepository;
+import com.example.ticketservice.request.FeedbackSubmitted;
 import com.example.ticketservice.request.TicketCreated;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +27,17 @@ public class TicketService {
 
     private final TicketAssignedRepository ticketAssignedRepository;
 
+    private final FeedbackRepository feedbackRepository;
+
     @Autowired
-    public TicketService(TicketPublisher ticketPublisher, TicketRepository ticketRepository, TicketAssignedRepository ticketAssignedRepository) {
+    public TicketService(TicketPublisher ticketPublisher,
+                         TicketRepository ticketRepository,
+                         TicketAssignedRepository ticketAssignedRepository,
+                         FeedbackRepository feedbackRepository) {
         this.ticketPublisher = ticketPublisher;
         this.ticketRepository = ticketRepository;
         this.ticketAssignedRepository = ticketAssignedRepository;
+        this.feedbackRepository = feedbackRepository;
     }
 
     @Transactional
@@ -45,5 +54,10 @@ public class TicketService {
         ticketAssignedRepository.save(com.example.ticketservice.entity.TicketAssigned.from(ticketAssignedEvent));
         Optional<com.example.ticketservice.entity.Ticket> ticketAssigned = ticketRepository.findById(ticketAssignedEvent.ticketId());
         ticketAssigned.ifPresent(ticket -> ticketRepository.updateTicketStatus(ticket.id(), TicketStatus.ASSIGNED));
+    }
+
+    public void updateTicketStatusAsCompletedAndAddFeedback(FeedbackSubmitted feedbackSubmitted) {
+        Feedback feedback = feedbackRepository.save(feedbackSubmitted.toFeedback());
+        ticketRepository.updateTicketStatus(feedback.ticketId(), TicketStatus.COMPLETED);
     }
 }

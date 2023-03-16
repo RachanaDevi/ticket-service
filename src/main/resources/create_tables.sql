@@ -25,3 +25,12 @@ CREATE TABLE customers
     place       VARCHAR(255),
     phone_number VARCHAR(255)
 );
+
+CREATE TABLE feedbacks
+(
+    id        serial PRIMARY KEY,
+    ticket_id serial,
+    rating    int2,
+    text      VARCHAR(255),
+    FOREIGN KEY (ticket_id) references tickets (id)
+);

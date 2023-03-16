@@ -2,8 +2,7 @@ package com.example.ticketservice.event;
 
 import org.junit.jupiter.api.Test;
 
-import static com.example.ticketservice.event.TicketStatus.ASSIGNED;
-import static com.example.ticketservice.event.TicketStatus.CREATED;
+import static com.example.ticketservice.event.TicketStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TicketStatusUnitTest {
@@ -11,6 +10,6 @@ class TicketStatusUnitTest {
     @Test
     void shouldReturnTotalTicketStatuses() {
 
-        assertThat(TicketStatus.values()).containsExactly(CREATED, ASSIGNED);
+        assertThat(TicketStatus.values()).containsExactly(CREATED, ASSIGNED, COMPLETED);
     }
 }
