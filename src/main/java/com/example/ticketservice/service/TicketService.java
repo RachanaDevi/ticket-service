@@ -25,10 +25,13 @@ public class TicketService {
 
     @Transactional
     public void saveAndPublish(Ticket ticket) {
+        com.example.ticketservice.entity.Ticket ticketEntity = new com.example.ticketservice.entity.Ticket(ticket.ticketId(), ticket.customerId(),
+                Timestamp.valueOf(ticket.timestamp()), ticket.concern(), TicketStatus.CREATED);
+        ticketRepository.save(ticketEntity);
         ticketPublisher.publish(ticket);
-        ticketRepository.save(new com.example.ticketservice.entity.Ticket(ticket.customerId(),
-                Timestamp.valueOf(ticket.timestamp()), ticket.concern(), TicketStatus.CREATED));
 //        ticketRepository.saveCreatedTicket(ticket.customerId(), ticket.concern(), Timestamp.valueOf(ticket.timestamp()));
     }
+
+    // consume the ticket and update the database
 
 }
