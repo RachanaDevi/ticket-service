@@ -9,6 +9,15 @@ CREATE TABLE tickets
     FOREIGN KEY (customer_id) references customers (id)
 );
 
+CREATE TABLE tickets_assigned
+(
+    id          serial PRIMARY KEY,
+    ticket_id   serial,
+    consultant_id serial,
+    FOREIGN KEY (consultant_id) references consultants (id),
+    FOREIGN KEY (ticket_id) references tickets (id)
+);
+
 CREATE TABLE customers
 (
     id          serial PRIMARY KEY,

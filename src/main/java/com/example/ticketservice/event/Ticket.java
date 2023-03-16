@@ -25,8 +25,8 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public static Ticket from(TicketCreated ticketCreation, Long id) {
-        return new Ticket(id, ticketCreation.customerId(), ticketCreation.concern(), ticketCreation.timestamp(), ticketCreation.place());
+    public static Ticket from(TicketCreated ticketCreated, Long id) {
+        return new Ticket(id, ticketCreated.customerId(), ticketCreated.concern(), ticketCreated.timestamp(), ticketCreated.place());
     }
 
     @Override
