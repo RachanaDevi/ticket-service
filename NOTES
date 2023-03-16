@@ -9,7 +9,7 @@ kafka-consumer-groups.sh --bootstrap-server localhost:9092 --reset-offsets --to-
 curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","timestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
 curl -X POST http://localhost:8080/submitFeedback -H "Content-Type: application/json" -d '{"ticketId": 3,"text": "Good service","rating" : 9}'
 
-UPDATE consultants_availability SET available = f WHERE id = 3;
+UPDATE consultants_availability SET available = 't' WHERE id = 3;
 
 TODO:
 1. Use spring security to store session for customer
