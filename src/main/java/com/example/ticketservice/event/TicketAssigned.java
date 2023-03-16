@@ -13,11 +13,6 @@ public class TicketAssigned {
     public TicketAssigned() {
     }
 
-    public TicketAssigned(Long ticketId, Long consultantId) {
-        this.ticketId = ticketId;
-        this.consultantId = consultantId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

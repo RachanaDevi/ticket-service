@@ -39,13 +39,4 @@ public class Ticket {
         this.place = place;
         this.status = status;
     }
-
-    public Ticket(Long id, Long customerId, Timestamp timestamp, String concern, TicketStatus status) {
-        this.id = id;
-        this.customerId = customerId;
-        this.timestamp = timestamp;
-        this.concern = concern;
-        this.status = status;
-    }
-
 }
