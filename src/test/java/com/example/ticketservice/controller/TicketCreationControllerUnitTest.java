@@ -1,7 +1,8 @@
 package com.example.ticketservice.controller;
 
-import com.example.ticketservice.event.Ticket;
 import com.example.ticketservice.producer.TicketPublisher;
+import com.example.ticketservice.request.TicketCreated;
+import com.example.ticketservice.service.TicketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,8 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,11 +29,11 @@ class TicketCreationControllerUnitTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private TicketPublisher producer;
+    private TicketService ticketService;
 
     @Test
     void shouldReturnResponseAsOK() throws Exception {
-        Ticket raisedTicket = new Ticket(1L, 2L, "anyConcern", "anyDate", "anyPlace");
+        TicketCreated raisedTicket = new TicketCreated( 2L, "anyConcern", "anyDate", "anyPlace");
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")
@@ -43,7 +46,7 @@ class TicketCreationControllerUnitTest {
 
     @Test
     void shouldReturnResponseBody() throws Exception {
-        Ticket raisedTicket = new Ticket(1L, 2L, "anyConcern", "anyDate", "anyPlace");
+        TicketCreated raisedTicket = new TicketCreated( 2L, "anyConcern", "anyDate", "anyPlace");
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")

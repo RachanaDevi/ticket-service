@@ -1,6 +1,5 @@
 package com.example.ticketservice.producer;
 
-import com.example.ticketservice.event.TicketCreated;
 import com.example.ticketservice.event.Ticket;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

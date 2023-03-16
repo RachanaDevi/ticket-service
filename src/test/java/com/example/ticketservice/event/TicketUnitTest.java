@@ -1,24 +1,25 @@
 package com.example.ticketservice.event;
 
-import com.example.ticketservice.event.Ticket;
 import org.junit.jupiter.api.Test;
 
+import static com.example.ticketservice.fixture.TicketFixture.anyOtherTicket;
+import static com.example.ticketservice.fixture.TicketFixture.anyTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TicketUnitTest {
 
     @Test
     void shouldEquateTwoRaisedTickets() {
-        Ticket raisedTicket = new Ticket(1L, 2L, "anyConcern", "anyDate", "anyPlace");
-        Ticket otherRaiseTicket = new Ticket(1L,2L, "anyConcern", "anyDate", "anyPlace");
+        Ticket raisedTicket = anyTicket();
+        Ticket otherRaiseTicket = anyTicket();
 
         assertThat(raisedTicket).isEqualTo(otherRaiseTicket);
     }
 
     @Test
     void shouldNotEquateTwoRaisedTicketsIfAnyFieldIsDifferent() {
-        Ticket raisedTicket = new Ticket(1L, 3L, "anyConcern", "anyDate", "anyPlace");
-        Ticket otherRaisedTicket = new Ticket(1L, 2L, "anyConcern", "anyDate", "anyPlace");
+        Ticket raisedTicket = anyTicket();
+        Ticket otherRaisedTicket = anyOtherTicket();
 
         assertThat(raisedTicket).isNotEqualTo(otherRaisedTicket);
     }

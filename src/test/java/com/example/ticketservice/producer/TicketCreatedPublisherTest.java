@@ -1,13 +1,11 @@
 package com.example.ticketservice.producer;
 
 import com.example.ticketservice.event.Ticket;
-import com.example.ticketservice.event.TicketCreated;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import static com.example.ticketservice.fixture.TicketCreatedFixture.anyTicket;
-import static com.example.ticketservice.fixture.TicketCreatedFixture.anyTicketCreated;
+import static com.example.ticketservice.fixture.TicketFixture.anyTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -25,7 +23,7 @@ class TicketCreatedPublisherTest {
         ArgumentCaptor<String> topicArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(kafkaTemplate).send(topicArgumentCaptor.capture(), any());
 
-        assertThat(topicArgumentCaptor.getValue()).isEqualTo("ticket-service-topic");
+        assertThat(topicArgumentCaptor.getValue()).isEqualTo("ticket-created-topic");
     }
 
     @Test
