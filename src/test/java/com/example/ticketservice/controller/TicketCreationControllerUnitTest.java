@@ -18,8 +18,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(CustomerController.class)
-class CustomerControllerUnitTest {
+@WebMvcTest(TicketCreationController.class)
+class TicketCreationControllerUnitTest {
 
 
     @Autowired
@@ -30,7 +30,7 @@ class CustomerControllerUnitTest {
 
     @Test
     void shouldReturnResponseAsOK() throws Exception {
-        Ticket raisedTicket = new Ticket("anyCustomerId", "anyConcern", "anyDate");
+        Ticket raisedTicket = new Ticket(1L, 2L, "anyConcern", "anyDate", "anyPlace");
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")
@@ -43,7 +43,7 @@ class CustomerControllerUnitTest {
 
     @Test
     void shouldReturnResponseBody() throws Exception {
-        Ticket raisedTicket = new Ticket("anyCustomerId", "anyConcern", "anyDate");
+        Ticket raisedTicket = new Ticket(1L, 2L, "anyConcern", "anyDate", "anyPlace");
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")
