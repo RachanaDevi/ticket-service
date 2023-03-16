@@ -2,9 +2,10 @@ Curl command for creating a ticket
 curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": "1234","concern": "Washing machine not working properly","date" : "2022-01-01"}'
 
 Kafka console consumer for message-topic
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-service-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-assigned-topic --from-beginning
 
-curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","timestamp" : "2023-02-18 01:24:00"}'
+curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","timestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
+
 TODO:
 1. Use spring security to store session for customer
 2. Create customer-service which is just entering details for customer

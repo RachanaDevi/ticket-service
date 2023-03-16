@@ -1,5 +1,5 @@
 package com.example.ticketservice.constants;
 
 public class KafkaConfigConstants {
-    public static final String TICKET_SERVICE_TOPIC = "ticket-service-topic";
+    public static final String TICKET_CREATED_TOPIC = "ticket-created-topic";
 }

@@ -5,6 +5,7 @@ CREATE TABLE tickets
     concern     VARCHAR(255),
     status      VARCHAR(255),
     timestamp   timestamp,
+    place       VARCHAR(100),
     FOREIGN KEY (customer_id) references customers (id)
 );
 

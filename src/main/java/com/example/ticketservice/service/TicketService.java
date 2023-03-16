@@ -4,11 +4,10 @@ import com.example.ticketservice.event.Ticket;
 import com.example.ticketservice.event.TicketStatus;
 import com.example.ticketservice.producer.TicketPublisher;
 import com.example.ticketservice.repository.TicketRepository;
+import com.example.ticketservice.request.TicketCreated;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
 
 @Service
 public class TicketService {
@@ -24,14 +23,10 @@ public class TicketService {
     }
 
     @Transactional
-    public void saveAndPublish(Ticket ticket) {
-        com.example.ticketservice.entity.Ticket ticketEntity = new com.example.ticketservice.entity.Ticket(ticket.ticketId(), ticket.customerId(),
-                Timestamp.valueOf(ticket.timestamp()), ticket.concern(), TicketStatus.CREATED);
+    public void saveAndPublish(TicketCreated ticketCreated) {
+        com.example.ticketservice.entity.Ticket ticketEntity = ticketCreated.toTicketEntity(TicketStatus.CREATED);
         ticketRepository.save(ticketEntity);
-        ticketPublisher.publish(ticket);
-//        ticketRepository.saveCreatedTicket(ticket.customerId(), ticket.concern(), Timestamp.valueOf(ticket.timestamp()));
+        ticketPublisher.publish(Ticket.from(ticketCreated, ticketEntity.id()));
     }
-
-    // consume the ticket and update the database
 
 }

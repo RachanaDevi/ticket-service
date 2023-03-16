@@ -10,12 +10,10 @@ import java.util.Objects;
 public class TicketCreated {
 
     private final Ticket ticket;
-    private final TicketStatus ticketStatus;
 
     @JsonCreator
     public TicketCreated(Ticket ticket) {
         this.ticket = ticket;
-        this.ticketStatus = TicketStatus.CREATED;
     }
 
     public static TicketCreated createdFrom(Ticket raisedTicket) {
@@ -27,15 +25,12 @@ public class TicketCreated {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TicketCreated that = (TicketCreated) o;
-        return Objects.equals(ticket, that.ticket) && ticketStatus == that.ticketStatus;
+        return Objects.equals(ticket, that.ticket);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticket, ticketStatus);
+        return Objects.hash(ticket);
     }
 
-    public TicketStatus status() {
-        return this.ticketStatus;
-    }
 }

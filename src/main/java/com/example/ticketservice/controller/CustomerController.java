@@ -1,7 +1,7 @@
 package com.example.ticketservice.controller;
 
 
-import com.example.ticketservice.event.Ticket;
+import com.example.ticketservice.request.TicketCreated;
 import com.example.ticketservice.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ public class CustomerController {
 
     @PostMapping(value = "/createTicket", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> createTicket(@RequestBody Ticket raisedTicket) {
-        ticketService.saveAndPublish(raisedTicket);
+    public ResponseEntity<String> createTicket(@RequestBody TicketCreated ticketCreated) {
+        ticketService.saveAndPublish(ticketCreated);
         return ResponseEntity.ok("Ticket submitted successfully!");
     }
 }

@@ -23,22 +23,4 @@ class TicketCreatedUnitTest {
 
         assertThat(raisedTicket).isNotEqualTo(otherTicketCreated);
     }
-
-    @Test
-    void shouldGetTicketStatusAsCreatedFromRaisedTicket() {
-        Ticket raisedTicket = new Ticket("anyCustomerId", "anyConcern", "anyDate");
-        TicketCreated ticketCreated = TicketCreated.createdFrom(raisedTicket);
-
-        assertThat(ticketCreated.status()).isEqualTo(TicketStatus.CREATED);
-    }
-
-    @Test
-    void shouldGetTicketEventFromRaisedTicket() {
-        Ticket raisedTicket = new Ticket("anyCustomerId", "anyConcern", "anyDate");
-        TicketCreated ticketCreated = TicketCreated.createdFrom(raisedTicket);
-
-        TicketCreated otherTicketCreated = new TicketCreated(anyTicket());
-
-        assertThat(ticketCreated).isEqualTo(otherTicketCreated);
-    }
 }

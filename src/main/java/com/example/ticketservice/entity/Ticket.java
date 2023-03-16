@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 public class Ticket {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long customerId;
@@ -19,16 +20,19 @@ public class Ticket {
 
     private String concern;
 
+    private String place;
+
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
     public Ticket() {
     }
 
-    public Ticket(Long customerId, Timestamp timestamp, String concern, TicketStatus status) {
+    public Ticket(Long customerId, Timestamp timestamp, String concern, String place, TicketStatus status) {
         this.customerId = customerId;
         this.timestamp = timestamp;
         this.concern = concern;
+        this.place = place;
         this.status = status;
     }
 
@@ -38,5 +42,9 @@ public class Ticket {
         this.timestamp = timestamp;
         this.concern = concern;
         this.status = status;
+    }
+
+    public Long id() {
+        return id;
     }
 }
