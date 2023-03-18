@@ -12,21 +12,20 @@ public class Ticket {
     private final Long ticketId;
     private final Long customerId;
     private final String concern;
-    private final String timestamp;
-
+    private final String scheduledTimestamp;
     private final String place;
 
     @JsonCreator
-    public Ticket(Long ticketId, Long customerId, String concern, String timestamp, String place) {
+    public Ticket(Long ticketId, Long customerId, String concern, String scheduledTimestamp, String place) {
         this.customerId = customerId;
         this.concern = concern;
-        this.timestamp = timestamp;
+        this.scheduledTimestamp = scheduledTimestamp;
         this.place = place;
         this.ticketId = ticketId;
     }
 
     public static Ticket from(TicketCreated ticketCreated, Long id) {
-        return new Ticket(id, ticketCreated.customerId(), ticketCreated.concern(), ticketCreated.timestamp(), ticketCreated.place());
+        return new Ticket(id, ticketCreated.customerId(), ticketCreated.concern(), ticketCreated.scheduledTimestamp(), ticketCreated.place());
     }
 
     @Override
@@ -34,11 +33,11 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return Objects.equals(ticketId, ticket.ticketId) && Objects.equals(customerId, ticket.customerId) && Objects.equals(concern, ticket.concern) && Objects.equals(timestamp, ticket.timestamp) && Objects.equals(place, ticket.place);
+        return Objects.equals(ticketId, ticket.ticketId) && Objects.equals(customerId, ticket.customerId) && Objects.equals(concern, ticket.concern) && Objects.equals(scheduledTimestamp, ticket.scheduledTimestamp) && Objects.equals(place, ticket.place);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketId, customerId, concern, timestamp, place);
+        return Objects.hash(ticketId, customerId, concern, scheduledTimestamp, place);
     }
 }

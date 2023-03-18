@@ -4,7 +4,8 @@ CREATE TABLE tickets
     customer_id serial,
     concern     VARCHAR(255),
     status      VARCHAR(255),
-    timestamp   timestamp,
+    scheduled_timestamp   timestamp,
+    creation_timestamp   timestamp,
     place       VARCHAR(100),
     FOREIGN KEY (customer_id) references customers (id)
 );

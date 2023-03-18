@@ -14,11 +14,13 @@ public class Ticket {
 
     private Long customerId;
 
-    private Timestamp timestamp;
+    private Timestamp creationTimestamp;
 
     private String concern;
 
     private String place;
+
+    private Timestamp scheduledTimestamp;
 
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
@@ -30,9 +32,10 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Long customerId, Timestamp timestamp, String concern, String place, TicketStatus status) {
+    public Ticket(Long customerId, Timestamp creationTimestamp, Timestamp scheduledTimestamp, String concern, String place, TicketStatus status) {
         this.customerId = customerId;
-        this.timestamp = timestamp;
+        this.creationTimestamp = creationTimestamp;
+        this.scheduledTimestamp = scheduledTimestamp;
         this.concern = concern;
         this.place = place;
         this.status = status;
