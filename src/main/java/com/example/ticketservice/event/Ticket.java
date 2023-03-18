@@ -10,14 +10,12 @@ import java.util.Objects;
 public class Ticket {
 
     private final Long ticketId;
-    private final Long customerId;
     private final String concern;
     private final String scheduledTimestamp;
     private final String place;
 
     @JsonCreator
-    public Ticket(Long ticketId, Long customerId, String concern, String scheduledTimestamp, String place) {
-        this.customerId = customerId;
+    public Ticket(Long ticketId, String concern, String scheduledTimestamp, String place) {
         this.concern = concern;
         this.scheduledTimestamp = scheduledTimestamp;
         this.place = place;
@@ -25,7 +23,7 @@ public class Ticket {
     }
 
     public static Ticket from(TicketCreated ticketCreated, Long id) {
-        return new Ticket(id, ticketCreated.customerId(), ticketCreated.concern(), ticketCreated.scheduledTimestamp(), ticketCreated.place());
+        return new Ticket(id, ticketCreated.concern(), ticketCreated.scheduledTimestamp(), ticketCreated.place());
     }
 
     @Override
@@ -33,11 +31,11 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return Objects.equals(ticketId, ticket.ticketId) && Objects.equals(customerId, ticket.customerId) && Objects.equals(concern, ticket.concern) && Objects.equals(scheduledTimestamp, ticket.scheduledTimestamp) && Objects.equals(place, ticket.place);
+        return Objects.equals(ticketId, ticket.ticketId) && Objects.equals(concern, ticket.concern) && Objects.equals(scheduledTimestamp, ticket.scheduledTimestamp) && Objects.equals(place, ticket.place);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketId, customerId, concern, scheduledTimestamp, place);
+        return Objects.hash(ticketId, concern, scheduledTimestamp, place);
     }
 }
