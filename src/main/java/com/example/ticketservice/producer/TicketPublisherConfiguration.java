@@ -1,6 +1,6 @@
 package com.example.ticketservice.producer;
 
-import com.example.ticketservice.event.Ticket;
+import com.example.ticketservice.event.TicketCreated;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ import static com.example.ticketservice.constants.KafkaConfigConstants.BOOTSTRAP
 public class TicketPublisherConfiguration {
 
     @Bean
-    public ProducerFactory<String, Ticket> producerFactory() {
+    public ProducerFactory<String, TicketCreated> producerFactory() {
         Map<String, Object> producerConfigs = new HashMap<>();
         producerConfigs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         producerConfigs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -28,7 +28,7 @@ public class TicketPublisherConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, Ticket> messageKafkaTemplate() {
+    public KafkaTemplate<String, TicketCreated> messageKafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

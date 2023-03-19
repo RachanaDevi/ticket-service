@@ -2,7 +2,7 @@ package com.example.ticketservice.service;
 
 import com.example.ticketservice.constants.KafkaConfigConstants;
 import com.example.ticketservice.entity.Feedback;
-import com.example.ticketservice.event.Ticket;
+import com.example.ticketservice.event.TicketCreated;
 import com.example.ticketservice.event.TicketAssigned;
 import com.example.ticketservice.entity.TicketStatus;
 import com.example.ticketservice.producer.TicketPublisher;
@@ -10,7 +10,6 @@ import com.example.ticketservice.repository.FeedbackRepository;
 import com.example.ticketservice.repository.TicketAssignedRepository;
 import com.example.ticketservice.repository.TicketRepository;
 import com.example.ticketservice.request.FeedbackSubmitted;
-import com.example.ticketservice.request.TicketCreated;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -41,10 +40,10 @@ public class TicketService {
     }
 
     @Transactional
-    public void saveAndPublish(TicketCreated ticketCreated) {
+    public void saveAndPublish(com.example.ticketservice.request.TicketCreated ticketCreated) {
         com.example.ticketservice.entity.Ticket ticketEntity = ticketCreated.toTicketEntity(TicketStatus.CREATED);
         ticketRepository.save(ticketEntity);
-        ticketPublisher.publish(Ticket.from(ticketCreated, ticketEntity.id()));
+        ticketPublisher.publish(TicketCreated.from(ticketCreated, ticketEntity.id()));
     }
 
     @KafkaListener(topics = KafkaConfigConstants.TICKET_ASSIGNED_TOPIC,

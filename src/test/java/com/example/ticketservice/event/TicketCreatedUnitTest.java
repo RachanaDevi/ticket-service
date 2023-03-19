@@ -6,20 +6,20 @@ import static com.example.ticketservice.fixture.TicketFixture.anyOtherTicket;
 import static com.example.ticketservice.fixture.TicketFixture.anyTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TicketUnitTest {
+class TicketCreatedUnitTest {
 
     @Test
     void shouldEquateTwoRaisedTickets() {
-        Ticket raisedTicket = anyTicket();
-        Ticket otherRaiseTicket = anyTicket();
+        TicketCreated raisedTicket = anyTicket();
+        TicketCreated otherRaiseTicket = anyTicket();
 
         assertThat(raisedTicket).isEqualTo(otherRaiseTicket);
     }
 
     @Test
     void shouldNotEquateTwoRaisedTicketsIfAnyFieldIsDifferent() {
-        Ticket raisedTicket = anyTicket();
-        Ticket otherRaisedTicket = anyOtherTicket();
+        TicketCreated raisedTicket = anyTicket();
+        TicketCreated otherRaisedTicket = anyOtherTicket();
 
         assertThat(raisedTicket).isNotEqualTo(otherRaisedTicket);
     }

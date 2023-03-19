@@ -1,15 +1,15 @@
 package com.example.ticketservice.fixture;
 
-import com.example.ticketservice.event.Ticket;
+import com.example.ticketservice.event.TicketCreated;
 
 public class TicketFixture {
 
-    public static Ticket anyTicket() {
-        return new Ticket(1L, "anyConcern", "anyDate", "anyPlace");
+    public static TicketCreated anyTicket() {
+        return new TicketCreated(1L, "anyConcern", "anyDate", "anyPlace");
     }
 
 
-    public static Ticket anyOtherTicket() {
-        return new Ticket(1L, "anyConcern", "anyDate", "anyPlace");
+    public static TicketCreated anyOtherTicket() {
+        return new TicketCreated(1L, "anyConcern", "anyDate", "anyPlace");
     }
 }

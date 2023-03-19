@@ -1,6 +1,6 @@
 package com.example.ticketservice.producer;
 
-import com.example.ticketservice.event.Ticket;
+import com.example.ticketservice.event.TicketCreated;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -15,7 +15,7 @@ class TicketCreatedPublisherTest {
 
     @Test
     void shouldPublishAnEventWithGivenTopic() {
-        KafkaTemplate<String, Ticket> kafkaTemplate = mock(KafkaTemplate.class);
+        KafkaTemplate<String, TicketCreated> kafkaTemplate = mock(KafkaTemplate.class);
 
         TicketPublisher ticketPublisher = new TicketPublisher(kafkaTemplate);
         ticketPublisher.publish(anyTicket());
@@ -28,12 +28,12 @@ class TicketCreatedPublisherTest {
 
     @Test
     void shouldPublishEventWithGivenTicketEvent() {
-        KafkaTemplate<String, Ticket> kafkaTemplate = mock(KafkaTemplate.class);
+        KafkaTemplate<String, TicketCreated> kafkaTemplate = mock(KafkaTemplate.class);
 
         TicketPublisher producer = new TicketPublisher(kafkaTemplate);
         producer.publish(anyTicket());
 
-        ArgumentCaptor<Ticket> messageArgumentCaptor = ArgumentCaptor.forClass(Ticket.class);
+        ArgumentCaptor<TicketCreated> messageArgumentCaptor = ArgumentCaptor.forClass(TicketCreated.class);
         verify(kafkaTemplate).send(any(), messageArgumentCaptor.capture());
 
         assertThat(messageArgumentCaptor.getValue()).isEqualTo(anyTicket());
