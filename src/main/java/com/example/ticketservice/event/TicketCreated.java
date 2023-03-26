@@ -27,10 +27,6 @@ public class TicketCreated {
         this.ticketId = ticketId;
     }
 
-//    public static TicketCreated from(com.example.ticketservice.request.TicketCreated ticketCreated, Long id) {
-//        return new TicketCreated(id, ticketCreated.productId(), ticketCreated.productCategoryId(), ticketCreated.concern(), ticketCreated.scheduledTimestamp(), ticketCreated.place());
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

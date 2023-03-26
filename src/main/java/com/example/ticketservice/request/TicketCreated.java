@@ -35,28 +35,4 @@ public class TicketCreated {
     public com.example.ticketservice.event.TicketCreated toTicketCreatedWithId(Long id) {
         return new com.example.ticketservice.event.TicketCreated(id, productId, productCategoryId, concern, scheduledTimestamp, place);
     }
-//
-//    public Long customerId() {
-//        return customerId;
-//    }
-//
-//    public String concern() {
-//        return concern;
-//    }
-//
-//    public String scheduledTimestamp() {
-//        return scheduledTimestamp;
-//    }
-//
-//    public String place() {
-//        return place;
-//    }
-//
-//    public Long productId() {
-//        return productId;
-//    }
-//
-//    public Long productCategoryId() {
-//        return productCategoryId;
-//    }
 }
