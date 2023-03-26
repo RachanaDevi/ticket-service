@@ -14,6 +14,7 @@ public class Ticket {
 
     private Long customerId;
 
+    private Long productId;
     private Timestamp creationTimestamp;
 
     private String concern;
@@ -32,8 +33,9 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Long customerId, Timestamp creationTimestamp, Timestamp scheduledTimestamp, String concern, String place, TicketStatus status) {
+    public Ticket(Long customerId, Long productId, Timestamp creationTimestamp, Timestamp scheduledTimestamp, String concern, String place, TicketStatus status) {
         this.customerId = customerId;
+        this.productId = productId;
         this.creationTimestamp = creationTimestamp;
         this.scheduledTimestamp = scheduledTimestamp;
         this.concern = concern;

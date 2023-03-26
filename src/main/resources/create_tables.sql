@@ -3,6 +3,7 @@ CREATE TABLE tickets
 (
     id          serial PRIMARY KEY,
     customer_id serial,
+    product_id serial,
     concern     VARCHAR(255),
     status      VARCHAR(255),
     scheduled_timestamp   timestamp,

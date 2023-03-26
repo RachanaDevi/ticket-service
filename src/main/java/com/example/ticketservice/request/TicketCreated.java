@@ -12,12 +12,16 @@ public class TicketCreated {
 
     private static final Timestamp TICKET_CREATED_TIMESTAMP = Timestamp.from(Instant.now());
     private final Long customerId;
+    private final Long productId;
+    private final Long productCategoryId;
     private final String concern;
     private final String scheduledTimestamp;
     private final String place;
 
-    public TicketCreated(Long customerId, String concern, String scheduledTimestamp, String place) {
+    public TicketCreated(Long customerId, Long productId, Long productCategoryId, String concern, String scheduledTimestamp, String place) {
         this.customerId = customerId;
+        this.productId = productId;
+        this.productCategoryId = productCategoryId;
         this.concern = concern;
         this.scheduledTimestamp = scheduledTimestamp;
         this.place = place;
@@ -25,22 +29,34 @@ public class TicketCreated {
 
     public Ticket toTicketEntity(TicketStatus ticketStatus) {
         return new com.example.ticketservice.entity.Ticket(customerId,
-                TICKET_CREATED_TIMESTAMP, Timestamp.valueOf(scheduledTimestamp), concern, place, ticketStatus);
+                productId, TICKET_CREATED_TIMESTAMP, Timestamp.valueOf(scheduledTimestamp), concern, place, ticketStatus);
     }
 
-    public Long customerId() {
-        return customerId;
+    public com.example.ticketservice.event.TicketCreated toTicketCreatedWithId(Long id) {
+        return new com.example.ticketservice.event.TicketCreated(id, productId, productCategoryId, concern, scheduledTimestamp, place);
     }
-
-    public String concern() {
-        return concern;
-    }
-
-    public String scheduledTimestamp() {
-        return scheduledTimestamp;
-    }
-
-    public String place() {
-        return place;
-    }
+//
+//    public Long customerId() {
+//        return customerId;
+//    }
+//
+//    public String concern() {
+//        return concern;
+//    }
+//
+//    public String scheduledTimestamp() {
+//        return scheduledTimestamp;
+//    }
+//
+//    public String place() {
+//        return place;
+//    }
+//
+//    public Long productId() {
+//        return productId;
+//    }
+//
+//    public Long productCategoryId() {
+//        return productCategoryId;
+//    }
 }

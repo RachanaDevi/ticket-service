@@ -2,9 +2,8 @@ package com.example.ticketservice.service;
 
 import com.example.ticketservice.constants.KafkaConfigConstants;
 import com.example.ticketservice.entity.Feedback;
-import com.example.ticketservice.event.TicketCreated;
-import com.example.ticketservice.event.TicketAssigned;
 import com.example.ticketservice.entity.TicketStatus;
+import com.example.ticketservice.event.TicketAssigned;
 import com.example.ticketservice.producer.TicketPublisher;
 import com.example.ticketservice.repository.FeedbackRepository;
 import com.example.ticketservice.repository.TicketAssignedRepository;
@@ -43,7 +42,7 @@ public class TicketService {
     public void saveAndPublish(com.example.ticketservice.request.TicketCreated ticketCreated) {
         com.example.ticketservice.entity.Ticket ticketEntity = ticketCreated.toTicketEntity(TicketStatus.CREATED);
         ticketRepository.save(ticketEntity);
-        ticketPublisher.publish(TicketCreated.from(ticketCreated, ticketEntity.id()));
+        ticketPublisher.publish(ticketCreated.toTicketCreatedWithId(ticketEntity.id()));
     }
 
     @KafkaListener(topics = KafkaConfigConstants.TICKET_ASSIGNED_TOPIC,

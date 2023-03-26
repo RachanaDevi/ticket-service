@@ -1,12 +1,12 @@
 Curl command for creating a ticketCreated
-curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": "1234","concern": "Washing machine not working properly","date" : "2022-01-01"}'
+Content-Type: application/json" -d '{"customerId": "1234","concern": "Washing machine not working properly","date" : "2022-01-01"}'
 
 Kafka console consumer for message-topic
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticketCreated-assigned-topic --from-beginning
 kafka-consumer-groups.sh --bootstrap-server localhost:9092 --reset-offsets --to-offset 0 --topic ticketCreated-assigned-topic --group message-consumer-group --execute
 
 
-curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1,"concern": "Washing machine","scheduledTimestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
+curl -X POST http://localhost:8080/createTicket -H "Content-Type: application/json" -d '{"customerId": 1, "productId":1, "productCategoryId":1, "concern": "Washing machine","scheduledTimestamp" : "2023-02-18 01:24:00", "place": "Pune"}'
 curl -X POST http://localhost:8080/submitFeedback -H "Content-Type: application/json" -d '{"ticketId": 3,"text": "Good service","rating" : 9}'
 
 UPDATE consultants_availability SET available = 't' WHERE consultant_id = 1;

@@ -14,7 +14,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,7 +30,7 @@ class TicketControllerUnitTest {
 
     @Test
     void shouldReturnResponseAsOK() throws Exception {
-        TicketCreated raisedTicket = new TicketCreated( 2L, "anyConcern", "anyDate", "anyPlace");
+        TicketCreated raisedTicket = new TicketCreated(2L, 1L, 1L, "anyConcern", "anyDate", "anyPlace");
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")
@@ -44,7 +43,7 @@ class TicketControllerUnitTest {
 
     @Test
     void shouldReturnResponseBody() throws Exception {
-        TicketCreated raisedTicket = new TicketCreated( 2L, "anyConcern", "anyDate", "anyPlace");
+        TicketCreated raisedTicket = new TicketCreated(2L, 1l, 1l, "anyConcern", "anyDate", "anyPlace");
         var payload = new ObjectMapper().writeValueAsString(raisedTicket);
 
         MockHttpServletResponse response = mockMvc.perform(post("/createTicket")

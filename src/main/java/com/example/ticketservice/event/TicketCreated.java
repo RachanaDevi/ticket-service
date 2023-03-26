@@ -9,21 +9,27 @@ import java.util.Objects;
 public class TicketCreated {
 
     private final Long ticketId;
+
+    private final Long productId;
+
+    private final Long productCategoryId;
     private final String concern;
     private final String scheduledTimestamp;
     private final String place;
 
     @JsonCreator
-    public TicketCreated(Long ticketId, String concern, String scheduledTimestamp, String place) {
+    public TicketCreated(Long ticketId, Long productId, Long productCategoryId, String concern, String scheduledTimestamp, String place) {
+        this.productId = productId;
+        this.productCategoryId = productCategoryId;
         this.concern = concern;
         this.scheduledTimestamp = scheduledTimestamp;
         this.place = place;
         this.ticketId = ticketId;
     }
 
-    public static TicketCreated from(com.example.ticketservice.request.TicketCreated ticketCreated, Long id) {
-        return new TicketCreated(id, ticketCreated.concern(), ticketCreated.scheduledTimestamp(), ticketCreated.place());
-    }
+//    public static TicketCreated from(com.example.ticketservice.request.TicketCreated ticketCreated, Long id) {
+//        return new TicketCreated(id, ticketCreated.productId(), ticketCreated.productCategoryId(), ticketCreated.concern(), ticketCreated.scheduledTimestamp(), ticketCreated.place());
+//    }
 
     @Override
     public boolean equals(Object o) {
