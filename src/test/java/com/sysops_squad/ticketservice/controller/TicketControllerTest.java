@@ -1,7 +1,7 @@
 package com.sysops_squad.ticketservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sysops_squad.ticketservice.controller.request.TicketCreated;
+import com.sysops_squad.ticketservice.request.TicketCreated;
 import com.sysops_squad.ticketservice.service.TicketService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

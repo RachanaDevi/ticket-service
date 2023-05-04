@@ -1,6 +1,6 @@
 package com.sysops_squad.ticketservice.controller;
 
-import com.sysops_squad.ticketservice.controller.request.TicketCreated;
+import com.sysops_squad.ticketservice.request.TicketCreated;
 import com.sysops_squad.ticketservice.service.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
