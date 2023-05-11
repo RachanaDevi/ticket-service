@@ -1,9 +1,15 @@
 package com.sysops_squad.ticketservice.event;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import java.util.Objects;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class TicketCreated {
-    private final Long id;
+    private Long id;
+
+    public TicketCreated() {
+    }
 
     public TicketCreated(Long id) {
         this.id = id;

@@ -17,7 +17,15 @@ configurations {
 repositories {
     mavenCentral()
 }
+ext {
+    set('testcontainersVersion', "1.17.1")
+}
 
+dependencyManagement {
+    imports {
+        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+    }
+}
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
@@ -36,6 +44,7 @@ dependencies {
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.2')
     testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.9.2')
     testImplementation 'org.testcontainers:kafka:1.17.6'
+    testImplementation 'org.testcontainers:junit-jupiter'
 }
 
 tasks.named('test') {
