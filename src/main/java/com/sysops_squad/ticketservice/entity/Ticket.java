@@ -2,6 +2,8 @@ package com.sysops_squad.ticketservice.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "tickets")
 public class Ticket {
@@ -10,14 +12,46 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long customerId;
+
+    private Long productId;
+    private Timestamp creationTimestamp;
+
+    private String concern;
+
+    private String place;
+
+    private Timestamp scheduledTimestamp;
+
+    @Enumerated(EnumType.STRING)
+    private TicketStatus status;
+
     public Ticket() {
     }
 
-    public Ticket(Long id) {
+    public Ticket(Long id, Long customerId, Long productId, Timestamp creationTimestamp, Timestamp scheduledTimestamp, String concern, String place, TicketStatus status) {
         this.id = id;
+        this.customerId = customerId;
+        this.productId = productId;
+        this.creationTimestamp = creationTimestamp;
+        this.scheduledTimestamp = scheduledTimestamp;
+        this.concern = concern;
+        this.place = place;
+        this.status = status;
+    }
+
+    public Ticket(Long customerId, Long productId, Timestamp creationTimestamp, Timestamp scheduledTimestamp, String concern, String place, TicketStatus status) {
+        this.customerId = customerId;
+        this.productId = productId;
+        this.creationTimestamp = creationTimestamp;
+        this.scheduledTimestamp = scheduledTimestamp;
+        this.concern = concern;
+        this.place = place;
+        this.status = status;
     }
 
     public Long id() {
-        return this.id;
+        return id;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.sysops_squad.ticketservice.service;
 
 import com.sysops_squad.ticketservice.entity.Ticket;
+import com.sysops_squad.ticketservice.entity.TicketStatus;
 import com.sysops_squad.ticketservice.producer.TicketPublisher;
 import com.sysops_squad.ticketservice.repository.TicketRepository;
 import com.sysops_squad.ticketservice.request.TicketCreated;
@@ -18,7 +19,7 @@ public class TicketService {
     }
 
     public void saveAndPublish(TicketCreated ticketCreated) {
-        Ticket createdTicket = ticketRepository.save(ticketCreated.toEntity());
+        Ticket createdTicket = ticketRepository.save(ticketCreated.toEntity(TicketStatus.CREATED));
         ticketPublisher.publish(new com.sysops_squad.ticketservice.event.TicketCreated(createdTicket.id()));
     }
 }

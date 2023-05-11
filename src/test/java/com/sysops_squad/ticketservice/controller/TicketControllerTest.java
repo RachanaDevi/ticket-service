@@ -1,6 +1,7 @@
 package com.sysops_squad.ticketservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sysops_squad.ticketservice.fixture.TicketCreatedFixture;
 import com.sysops_squad.ticketservice.request.TicketCreated;
 import com.sysops_squad.ticketservice.service.TicketService;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class TicketControllerTest {
 
     @Test
     void shouldCreateTicket() throws Exception {
-        String requestBody = MAPPER.writeValueAsString(new TicketCreated());
+        String requestBody = MAPPER.writeValueAsString(TicketCreatedFixture.Request.anyTicketCreated());
         mockMvc.perform(post("/createTicket")
                         .contentType("application/json")
                         .content(requestBody))

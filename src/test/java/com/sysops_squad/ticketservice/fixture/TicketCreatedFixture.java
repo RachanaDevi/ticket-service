@@ -7,7 +7,7 @@ public class TicketCreatedFixture {
     public static class Request {
 
         public static TicketCreated anyTicketCreated() {
-            return new TicketCreated();
+            return new TicketCreated(1L, 1L, 1L, "Washing machine not working", "2023-02-20 01:24:00", "Pune");
         }
     }
 
