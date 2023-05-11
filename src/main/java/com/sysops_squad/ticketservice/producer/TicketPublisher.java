@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
 
+import static com.sysops_squad.ticketservice.constants.KafkaConstants.TICKET_CREATED_TOPIC;
+
 @Component
 public class TicketPublisher {
 
@@ -17,6 +19,6 @@ public class TicketPublisher {
     }
 
     public CompletableFuture<SendResult<String, TicketCreated>> publish(TicketCreated ticketCreated) {
-        return kafkaTemplate.send("ticket-created-topic", ticketCreated);
+        return kafkaTemplate.send(TICKET_CREATED_TOPIC, ticketCreated);
     }
 }

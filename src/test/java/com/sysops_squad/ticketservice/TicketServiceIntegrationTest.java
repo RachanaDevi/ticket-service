@@ -22,9 +22,10 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
-import org.springframework.kafka.core.*;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -46,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.sysops_squad.ticketservice.constants.KafkaConstants.TICKET_CREATED_TOPIC;
 import static com.sysops_squad.ticketservice.fixture.TicketFixture.anyTicketEntityWithId;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -105,7 +107,7 @@ public class TicketServiceIntegrationTest {
         consumerProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
 
         kafkaConsumer = new KafkaConsumer<>(consumerProps);
-        kafkaConsumer.subscribe(Collections.singleton("ticket-created-topic"));
+        kafkaConsumer.subscribe(Collections.singleton(TICKET_CREATED_TOPIC));
     }
 
     static {

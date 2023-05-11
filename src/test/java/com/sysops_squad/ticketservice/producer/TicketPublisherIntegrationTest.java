@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.sysops_squad.ticketservice.constants.KafkaConstants.TICKET_CREATED_TOPIC;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
@@ -72,7 +73,7 @@ public class TicketPublisherIntegrationTest {
         consumerProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
 
         kafkaConsumer = new KafkaConsumer<>(consumerProps);
-        kafkaConsumer.subscribe(Collections.singleton("ticket-created-topic"));
+        kafkaConsumer.subscribe(Collections.singleton(TICKET_CREATED_TOPIC));
     }
 
     static {
