@@ -14,11 +14,13 @@ public class TicketCreatedFixture {
     public static class Event {
 
         public static com.sysops_squad.ticketservice.event.TicketCreated anyTicketCreated() {
-            return new com.sysops_squad.ticketservice.event.TicketCreated(1L);
+            return anyTicketCreatedWithId(1L);
         }
 
         public static com.sysops_squad.ticketservice.event.TicketCreated anyTicketCreatedWithId(Long id) {
-            return new com.sysops_squad.ticketservice.event.TicketCreated(id);
+            return new com.sysops_squad.ticketservice.event.TicketCreated(id, 1L, 1L,
+                    "Washing machine not working",
+                    "2023-02-20 01:24:00", "Pune");
         }
     }
 

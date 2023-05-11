@@ -30,4 +30,8 @@ public class TicketCreated {
         return new Ticket(customerId,
                 productId, Timestamp.from(Instant.now()), Timestamp.valueOf(scheduledTimestamp), concern, place, ticketStatus);
     }
+
+    public com.sysops_squad.ticketservice.event.TicketCreated toTicketCreatedWithId(Long id) {
+        return new com.sysops_squad.ticketservice.event.TicketCreated(id, productId, productCategoryId, concern, scheduledTimestamp, place);
+    }
 }

@@ -20,6 +20,6 @@ public class TicketService {
 
     public void saveAndPublish(TicketCreated ticketCreated) {
         Ticket createdTicket = ticketRepository.save(ticketCreated.toEntity(TicketStatus.CREATED));
-        ticketPublisher.publish(new com.sysops_squad.ticketservice.event.TicketCreated(createdTicket.id()));
+        ticketPublisher.publish(ticketCreated.toTicketCreatedWithId(createdTicket.id()));
     }
 }
