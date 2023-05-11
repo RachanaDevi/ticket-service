@@ -111,29 +111,6 @@ public class TicketPublisherIntegrationTest {
     static class KafkaTestContainersConfiguration {
 
         @Bean
-        ConcurrentKafkaListenerContainerFactory<String, TicketCreated> kafkaListenerContainerFactory() {
-            ConcurrentKafkaListenerContainerFactory<String, TicketCreated> factory = new ConcurrentKafkaListenerContainerFactory<>();
-            factory.setConsumerFactory(consumerFactory());
-            return factory;
-        }
-
-        @Bean
-        public ConsumerFactory<String, TicketCreated> consumerFactory() {
-            return new DefaultKafkaConsumerFactory<>(consumerConfigs());
-        }
-
-        @Bean
-        public Map<String, Object> consumerConfigs() {
-            Map<String, Object> props = new HashMap<>();
-            props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaContainer.getBootstrapServers());
-            props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-            props.put(ConsumerConfig.GROUP_ID_CONFIG, "test-group");
-            props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-            props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-            return props;
-        }
-
-        @Bean
         public ProducerFactory<String, TicketCreated> testProducerFactory() {
             Map<String, Object> configProps = new HashMap<>();
             configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaContainer.getBootstrapServers());
