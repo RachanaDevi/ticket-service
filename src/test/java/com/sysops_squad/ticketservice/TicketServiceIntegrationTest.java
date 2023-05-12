@@ -1,14 +1,22 @@
 package com.sysops_squad.ticketservice;
 
+import com.sysops_squad.ticketservice.entity.Ticket;
+import com.sysops_squad.ticketservice.entity.TicketStatus;
+import com.sysops_squad.ticketservice.event.TicketAssigned;
 import com.sysops_squad.ticketservice.event.TicketCreated;
+import com.sysops_squad.ticketservice.fixture.TicketAssignedFixture;
 import com.sysops_squad.ticketservice.fixture.TicketCreatedFixture;
+import com.sysops_squad.ticketservice.fixture.TicketFixture;
+import com.sysops_squad.ticketservice.repository.TicketAssignedRepository;
 import com.sysops_squad.ticketservice.repository.TicketRepository;
 import com.sysops_squad.ticketservice.service.TicketService;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.jetbrains.annotations.NotNull;
@@ -16,16 +24,11 @@ import org.junit.ClassRule;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -46,7 +49,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import static com.sysops_squad.ticketservice.constants.KafkaConstants.TICKET_ASSIGNED_TOPIC;
 import static com.sysops_squad.ticketservice.constants.KafkaConstants.TICKET_CREATED_TOPIC;
 import static com.sysops_squad.ticketservice.fixture.TicketFixture.anyTicketEntityWithId;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,6 +71,8 @@ public class TicketServiceIntegrationTest {
 
     private static KafkaConsumer<String, TicketCreated> kafkaConsumer;
 
+    private static KafkaProducer<String, TicketAssigned> kafkaProducer;
+
     @Container
     public static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.1"));
 
@@ -79,6 +86,9 @@ public class TicketServiceIntegrationTest {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private TicketAssignedRepository ticketAssignedRepository;
 
     @DynamicPropertySource
     static void kafkaProperties(DynamicPropertyRegistry registry) {
@@ -108,6 +118,9 @@ public class TicketServiceIntegrationTest {
 
         kafkaConsumer = new KafkaConsumer<>(consumerProps);
         kafkaConsumer.subscribe(Collections.singleton(TICKET_CREATED_TOPIC));
+        kafkaProducer = new KafkaProducer<>(producerConfigProperties());
+        ticketRepository.deleteAll();
+        ticketAssignedRepository.deleteAll();
     }
 
     static {
@@ -116,6 +129,7 @@ public class TicketServiceIntegrationTest {
 
     @AfterEach
     void tearDown() {
+        ticketAssignedRepository.deleteAll();
         ticketRepository.deleteAll();
     }
 
@@ -141,6 +155,21 @@ public class TicketServiceIntegrationTest {
         );
     }
 
+    @Test
+    void shouldUpdateTicketStatusAsTicketAssigned() throws InterruptedException {
+        Ticket ticket = ticketRepository.save(TicketFixture.anyTicketEntity());
+
+        ProducerRecord<String, TicketAssigned> record = new ProducerRecord<>(TICKET_ASSIGNED_TOPIC, TicketAssignedFixture.Event.anyTicketAssignedWithTicketId(ticket.id()));
+        kafkaProducer.send(record);
+
+        TimeUnit.SECONDS.sleep(5);
+
+        long ticketAssignedId = 1L;
+        Assertions.assertAll(
+                () -> assertThat(ticketRepository.findById(ticket.id()).get()).isEqualTo(TicketFixture.anyTicketEntityWith(ticket.id(), TicketStatus.ASSIGNED)),
+                () -> assertThat(ticketAssignedRepository.findById(ticketAssignedId)).isPresent());
+    }
+
     @NotNull
     private HttpEntity<com.sysops_squad.ticketservice.request.TicketCreated> httpEntityForTicketCreated() {
         return new HttpEntity<>(TicketCreatedFixture.Request.anyTicketCreated(), httpHeaders());
@@ -157,22 +186,13 @@ public class TicketServiceIntegrationTest {
         return "http://localhost:" + port + endpoint;
     }
 
-
-    @TestConfiguration
-    static class KafkaTestContainersConfiguration {
-        @Bean
-        public ProducerFactory<String, TicketCreated> testProducerFactory() {
-            Map<String, Object> configProps = new HashMap<>();
-            configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaContainer.getBootstrapServers());
-            configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-            configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-            return new DefaultKafkaProducerFactory<>(configProps);
-        }
-
-        @Bean
-        public KafkaTemplate<String, TicketCreated> kafkaTemplate() {
-            return new KafkaTemplate<>(testProducerFactory());
-        }
+    @NotNull
+    private Map<String, Object> producerConfigProperties() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaContainer.getBootstrapServers());
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        return configProps;
     }
 
     public static class Endpoints {

@@ -1,5 +1,6 @@
 package com.sysops_squad.ticketservice.service;
 
+import com.sysops_squad.ticketservice.constants.KafkaConstants;
 import com.sysops_squad.ticketservice.entity.Ticket;
 import com.sysops_squad.ticketservice.entity.TicketStatus;
 import com.sysops_squad.ticketservice.event.TicketAssigned;
@@ -7,6 +8,7 @@ import com.sysops_squad.ticketservice.producer.TicketPublisher;
 import com.sysops_squad.ticketservice.repository.TicketAssignedRepository;
 import com.sysops_squad.ticketservice.repository.TicketRepository;
 import com.sysops_squad.ticketservice.request.TicketCreated;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,6 +32,7 @@ public class TicketService {
         ticketPublisher.publish(ticketCreated.toTicketCreatedWithId(createdTicket.id()));
     }
 
+    @KafkaListener(topics = KafkaConstants.TICKET_ASSIGNED_TOPIC, groupId = KafkaConstants.TICKET_EVENT_CONSUMER_GROUP)
     public void updateTicketStatusAndAssignTicket(TicketAssigned ticketAssignedEvent) {
         ticketAssignedRepository.save(com.sysops_squad.ticketservice.entity.TicketAssigned.from(ticketAssignedEvent));
         Optional<Ticket> ticketAssigned = ticketRepository.findById(ticketAssignedEvent.ticketId());
