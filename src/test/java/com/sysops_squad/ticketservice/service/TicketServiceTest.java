@@ -2,10 +2,9 @@ package com.sysops_squad.ticketservice.service;
 
 import com.sysops_squad.ticketservice.entity.TicketStatus;
 import com.sysops_squad.ticketservice.event.TicketCreated;
-import com.sysops_squad.ticketservice.fixture.TicketAssignedFixture;
-import com.sysops_squad.ticketservice.fixture.TicketCreatedFixture;
-import com.sysops_squad.ticketservice.fixture.TicketFixture;
+import com.sysops_squad.ticketservice.fixture.*;
 import com.sysops_squad.ticketservice.producer.TicketPublisher;
+import com.sysops_squad.ticketservice.repository.FeedbackRepository;
 import com.sysops_squad.ticketservice.repository.TicketAssignedRepository;
 import com.sysops_squad.ticketservice.repository.TicketRepository;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ class TicketServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.save(any())).thenReturn(TicketFixture.anyTicketEntity());
 
-        TicketService ticketService = new TicketService(ticketRepository, mock(TicketPublisher.class), mock(TicketAssignedRepository.class));
+        TicketService ticketService = new TicketService(ticketRepository, mock(TicketPublisher.class), mock(TicketAssignedRepository.class), mock(FeedbackRepository.class));
 
         ticketService.saveAndPublish(anyTicketCreated());
 
@@ -40,7 +39,7 @@ class TicketServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.save(any())).thenReturn(TicketFixture.anyTicketEntityWithId(ticketId));
 
-        TicketService ticketService = new TicketService(ticketRepository, ticketPublisher, mock(TicketAssignedRepository.class));
+        TicketService ticketService = new TicketService(ticketRepository, ticketPublisher, mock(TicketAssignedRepository.class), mock(FeedbackRepository.class));
         ticketService.saveAndPublish(anyTicketCreated());
 
         ArgumentCaptor<TicketCreated> ticketCreatedArgumentCaptor = ArgumentCaptor.forClass(TicketCreated.class);
@@ -55,7 +54,7 @@ class TicketServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.findById(any())).thenReturn(Optional.of(TicketFixture.anyTicketEntityWithId(ticketId)));
 
-        TicketService ticketService = new TicketService(ticketRepository, mock(TicketPublisher.class), mock(TicketAssignedRepository.class));
+        TicketService ticketService = new TicketService(ticketRepository, mock(TicketPublisher.class), mock(TicketAssignedRepository.class), mock(FeedbackRepository.class));
 
         ticketService.updateTicketStatusAndAssignTicket(TicketAssignedFixture.Event.anyTicketAssignedWithTicketId(ticketId));
 
@@ -63,5 +62,33 @@ class TicketServiceTest {
         verify(ticketRepository).updateTicketStatus(any(), ticketStatusArgumentCaptor.capture());
 
         assertThat(ticketStatusArgumentCaptor.getValue()).isEqualTo(TicketStatus.ASSIGNED);
+    }
+
+    @Test
+    void shouldUpdateTicketStatusAsCompleted() {
+        TicketRepository ticketRepository = mock(TicketRepository.class);
+        FeedbackRepository feedbackRepository = mock(FeedbackRepository.class);
+        when(feedbackRepository.save(any())).thenReturn(FeedbackFixture.anyFeedbackWithFeedbackId());
+
+        TicketService ticketService = new TicketService(ticketRepository, mock(TicketPublisher.class), mock(TicketAssignedRepository.class), feedbackRepository);
+
+        ticketService.updateTicketStatusAsCompletedAndAddFeedback(FeedbackSubmittedFixture.Request.anyFeedbackSubmitted());
+
+        ArgumentCaptor<TicketStatus> ticketStatusArgumentCaptor = ArgumentCaptor.forClass(TicketStatus.class);
+        verify(ticketRepository).updateTicketStatus(any(), ticketStatusArgumentCaptor.capture());
+
+        assertThat(ticketStatusArgumentCaptor.getValue()).isEqualTo(TicketStatus.COMPLETED);
+    }
+
+    @Test
+    void shouldSaveTicketToFeedbackRepository() {
+        FeedbackRepository feedbackRepository = mock(FeedbackRepository.class);
+        when(feedbackRepository.save(any())).thenReturn(FeedbackFixture.anyFeedbackWithFeedbackId());
+
+        TicketService ticketService = new TicketService(mock(TicketRepository.class), mock(TicketPublisher.class), mock(TicketAssignedRepository.class), feedbackRepository);
+
+        ticketService.updateTicketStatusAsCompletedAndAddFeedback(FeedbackSubmittedFixture.Request.anyFeedbackSubmitted());
+
+        verify(feedbackRepository).save(any());
     }
 }

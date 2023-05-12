@@ -4,9 +4,8 @@ import com.sysops_squad.ticketservice.entity.Ticket;
 import com.sysops_squad.ticketservice.entity.TicketStatus;
 import com.sysops_squad.ticketservice.event.TicketAssigned;
 import com.sysops_squad.ticketservice.event.TicketCreated;
-import com.sysops_squad.ticketservice.fixture.TicketAssignedFixture;
-import com.sysops_squad.ticketservice.fixture.TicketCreatedFixture;
-import com.sysops_squad.ticketservice.fixture.TicketFixture;
+import com.sysops_squad.ticketservice.fixture.*;
+import com.sysops_squad.ticketservice.repository.FeedbackRepository;
 import com.sysops_squad.ticketservice.repository.TicketAssignedRepository;
 import com.sysops_squad.ticketservice.repository.TicketRepository;
 import com.sysops_squad.ticketservice.service.TicketService;
@@ -90,6 +89,9 @@ public class TicketServiceIntegrationTest {
     @Autowired
     private TicketAssignedRepository ticketAssignedRepository;
 
+    @Autowired
+    private FeedbackRepository feedbackRepository;
+
     @DynamicPropertySource
     static void kafkaProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
@@ -121,6 +123,7 @@ public class TicketServiceIntegrationTest {
         kafkaProducer = new KafkaProducer<>(producerConfigProperties());
         ticketRepository.deleteAll();
         ticketAssignedRepository.deleteAll();
+        feedbackRepository.deleteAll();
     }
 
     static {
@@ -130,6 +133,7 @@ public class TicketServiceIntegrationTest {
     @AfterEach
     void tearDown() {
         ticketAssignedRepository.deleteAll();
+        feedbackRepository.deleteAll();
         ticketRepository.deleteAll();
     }
 
@@ -139,7 +143,7 @@ public class TicketServiceIntegrationTest {
     }
 
     @Test
-    void shouldReturnProductsHavingAGivenProductCategoryId() {
+    void shouldCreateTicket() {
         ResponseEntity<String> response = testRestTemplate.exchange(urlForEndpoint(Endpoints.createTicket)
                 , HttpMethod.POST, httpEntityForTicketCreated(), new ParameterizedTypeReference<>() {
                 });
@@ -170,9 +174,29 @@ public class TicketServiceIntegrationTest {
                 () -> assertThat(ticketAssignedRepository.findById(ticketAssignedId)).isPresent());
     }
 
+    @Test
+    void shouldSubmitFeedback() {
+        Ticket ticket = ticketRepository.save(TicketFixture.anyTicketEntity());
+
+        ResponseEntity<String> response = testRestTemplate.exchange(urlForEndpoint(Endpoints.submitTicket)
+                , HttpMethod.POST, httpEntityForFeedbackSubmittedWithTicketId(ticket.id()), new ParameterizedTypeReference<>() {
+                });
+
+        Assertions.assertAll(
+                () -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED),
+                () -> assertThat(ticketRepository.findById(ticket.id()).get()).isEqualTo(TicketFixture.anyTicketEntityWith(ticket.id(), TicketStatus.COMPLETED)),
+                () -> assertThat(feedbackRepository.findAll()).usingRecursiveComparison().isEqualTo(List.of(FeedbackFixture.anyFeedbackWithTicketId(ticket.id())))
+        );
+    }
+
     @NotNull
     private HttpEntity<com.sysops_squad.ticketservice.request.TicketCreated> httpEntityForTicketCreated() {
         return new HttpEntity<>(TicketCreatedFixture.Request.anyTicketCreated(), httpHeaders());
+    }
+
+    @NotNull
+    private HttpEntity<com.sysops_squad.ticketservice.request.FeedbackSubmitted> httpEntityForFeedbackSubmittedWithTicketId(Long ticketId) {
+        return new HttpEntity<>(FeedbackSubmittedFixture.Request.anyFeedbackSubmittedWithTicketId(ticketId), httpHeaders());
     }
 
     @NotNull
@@ -197,5 +221,6 @@ public class TicketServiceIntegrationTest {
 
     public static class Endpoints {
         static String createTicket = "/createTicket";
+        static String submitTicket = "/submitFeedback";
     }
 }

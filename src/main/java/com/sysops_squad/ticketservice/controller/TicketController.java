@@ -1,5 +1,6 @@
 package com.sysops_squad.ticketservice.controller;
 
+import com.sysops_squad.ticketservice.request.FeedbackSubmitted;
 import com.sysops_squad.ticketservice.request.TicketCreated;
 import com.sysops_squad.ticketservice.service.TicketService;
 import org.springframework.http.HttpStatus;
@@ -24,4 +25,12 @@ public class TicketController {
         ticketService.saveAndPublish(ticketCreated);
         return ResponseEntity.status(HttpStatus.CREATED).body("Ticket submitted successfully!");
     }
+
+    @PostMapping(value = "/submitFeedback", consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> createTicket(@RequestBody FeedbackSubmitted feedbackSubmitted) {
+        ticketService.updateTicketStatusAsCompletedAndAddFeedback(feedbackSubmitted);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Ticket completed and feedback added!");
+    }
+
 }

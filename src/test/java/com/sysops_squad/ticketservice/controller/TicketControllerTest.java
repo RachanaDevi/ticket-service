@@ -1,8 +1,8 @@
 package com.sysops_squad.ticketservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sysops_squad.ticketservice.fixture.FeedbackSubmittedFixture;
 import com.sysops_squad.ticketservice.fixture.TicketCreatedFixture;
-import com.sysops_squad.ticketservice.request.TicketCreated;
 import com.sysops_squad.ticketservice.service.TicketService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +32,17 @@ public class TicketControllerTest {
                         .content(requestBody))
                 .andExpect(status().isCreated())
                 .andExpect(response -> assertThat(response.getResponse().getContentAsString()).isEqualTo("Ticket submitted successfully!"));
+    }
+
+    @Test
+    void shouldSubmitFeedback() throws Exception {
+        String requestBody = MAPPER.writeValueAsString(FeedbackSubmittedFixture.Request.anyFeedbackSubmitted());
+
+        mockMvc.perform((post("/submitFeedback"))
+                        .contentType("application/json")
+                        .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(response -> assertThat(response.getResponse().getContentAsString()).isEqualTo("Ticket completed and feedback added!"));
+
     }
 }

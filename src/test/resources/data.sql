@@ -19,3 +19,12 @@ CREATE TABLE if not exists tickets_assigned
 --     FOREIGN KEY (consultant_id) references consultants (id),
     FOREIGN KEY (ticket_id) references tickets (id)
 );
+
+CREATE TABLE if not exists feedbacks
+(
+    id        serial PRIMARY KEY,
+    ticket_id serial,
+    rating    int2,
+    text      VARCHAR(255),
+    FOREIGN KEY (ticket_id) references tickets (id)
+);
