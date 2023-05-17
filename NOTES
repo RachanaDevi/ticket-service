@@ -2,7 +2,8 @@ Curl command for creating a ticketCreated
 Content-Type: application/json" -d '{"customerId": "1234","concern": "Washing machine not working properly","date" : "2022-01-01"}'
 
 Kafka console consumer for message-topic
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticketCreated-assigned-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-assigned-topic --from-beginning
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ticket-created-topic --from-beginning
 kafka-consumer-groups.sh --bootstrap-server localhost:9092 --reset-offsets --to-offset 0 --topic ticketCreated-assigned-topic --group message-consumer-group --execute
 
 
